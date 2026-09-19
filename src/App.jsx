@@ -14,6 +14,7 @@ function App() {
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [confirmDeleteIndex, setConfirmDeleteIndex] = useState(null);
 useEffect(() => {
   const savedBookmarks =
     JSON.parse(localStorage.getItem("bookmarks")) || [];
@@ -263,7 +264,7 @@ const currentBookmarks = filteredBookmarks
 </button>
 <button
   onClick={() =>
-    handleDeleteBookmark(bookmark.originalIndex)
+    setConfirmDeleteIndex(bookmark.originalIndex)
   }
 >
   Delete
@@ -271,6 +272,32 @@ const currentBookmarks = filteredBookmarks
       <hr />
           </div>
     ))}
+  </div>
+)}
+
+{confirmDeleteIndex !== null && (
+  <div style={{
+    position: "fixed",
+    top: 0, left: 0, right: 0, bottom: 0,
+    background: "rgba(0,0,0,0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  }}>
+    <div style={{ background: "white", padding: "20px", borderRadius: "8px" }}>
+      <p>Are you sure you want to delete this bookmark?</p>
+      <button
+        onClick={() => {
+          handleDeleteBookmark(confirmDeleteIndex);
+          setConfirmDeleteIndex(null);
+        }}
+      >
+        Yes, delete
+      </button>
+      <button onClick={() => setConfirmDeleteIndex(null)}>
+        Cancel
+      </button>
+    </div>
   </div>
 )}
 
